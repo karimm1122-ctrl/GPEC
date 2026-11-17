@@ -129,6 +129,7 @@ function save_to_hdf5(file::Union{HDF5.File,HDF5.Group}, state::PerturbedEquilib
 
     # Applied resonant vectors [n_rational]
     !isempty(state.resonant_area_weighted_field) && (coupling_group["resonant_area_weighted_field"] = state.resonant_area_weighted_field)
+    !isempty(state.resonant_area_weighted_field) && (coupling_group["Phi_res_G"] = state.resonant_area_weighted_field .* 1e4)
     !isempty(state.resonant_current) && (coupling_group["resonant_current"] = state.resonant_current)
     !isempty(state.island_width_sq) && (coupling_group["island_width_sq"] = state.island_width_sq)
     !isempty(state.penetrated_area_weighted_field) && (coupling_group["penetrated_area_weighted_field"] = state.penetrated_area_weighted_field)
@@ -286,6 +287,9 @@ const PE_H5_ANNOTATIONS = [
             attach=(1 => "SingularCoupling/rational_psi", 1 => "SingularCoupling/rational_q")),
     "SingularCoupling/resonant_area_weighted_field" =>
         (; long_name="resonant area-weighted field b̄^r = Φ^r/A^r per rational surface (coordinate-invariant)", units="T", dims=("surface",),
+            attach=(1 => "SingularCoupling/rational_psi", 1 => "SingularCoupling/rational_q")),
+    "SingularCoupling/Phi_res_G" =>
+        (; long_name="resonant area-weighted field b̄^r = Φ^r/A^r in gauss (= resonant_area_weighted_field × 1e4)", units="G", dims=("surface",),
             attach=(1 => "SingularCoupling/rational_psi", 1 => "SingularCoupling/rational_q")),
     "SingularCoupling/resonant_current" =>
         (; long_name="pitch-resonant current per rational surface", units="A", dims=("surface",),
